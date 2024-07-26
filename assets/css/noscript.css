@@ -21,11 +21,13 @@
 /* Wrapper */
 
 	.wrapper > .inner {
+		
 		opacity: 1 !important;
 		-moz-transform: none !important;
 		-webkit-transform: none !important;
 		-ms-transform: none !important;
 		transform: none !important;
+		
 	}
 
 /* Sidebar */
