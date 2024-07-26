@@ -98,7 +98,7 @@ input, select, textarea {
 	}
 
 	body {
-		background: #312450;
+		background: #030d1f;
 	}
 
 		body.is-preload *, body.is-preload *:before, body.is-preload *:after {
@@ -2357,7 +2357,7 @@ input, select, textarea {
 
 		select option {
 			color: #ffffff;
-			background: #312450;
+			background: #030d1f;
 		}
 
 		select:focus::-ms-value {
