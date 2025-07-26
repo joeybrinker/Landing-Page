@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TeeMe - The Future of Golf Apps</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.1),
+                0 8px 25px rgba(0, 0, 0, 0.05),
+                0 2px 8px rgba(0, 0, 0, 0.03);
+            padding: 60px 50px;
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s ease-out 0.2s forwards;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, rgb(52, 199, 82), #45b049);
+        }
+
+        .logo-container {
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .logo-image {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            filter: drop-shadow(0 8px 25px rgba(52, 199, 82, 0.3)) 
+                    drop-shadow(0 4px 12px rgba(52, 199, 82, 0.2)) 
+                    drop-shadow(0 2px 6px rgba(0, 0, 0, 0.1));
+            transition: transform 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px) scale(0.8);
+            animation: fadeInUp 0.8s ease-out 0.6s forwards, logoScale 0.8s ease-out 0.6s forwards;
+        }
+
+        .logo-image:hover {
+            transform: translateY(-3px);
+        }
+
+        .logo-placeholder:hover {
+            transform: translateY(-3px);
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            line-height: 1.2;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease-out 1s forwards;
+            text-shadow: 
+                0 2px 8px rgba(0, 0, 0, 0.08),
+                0 1px 4px rgba(0, 0, 0, 0.06),
+                0 4px 12px rgba(0, 0, 0, 0.04);
+        }
+
+        .brand-name {
+            color: rgb(52, 199, 82);
+            font-weight: 700;
+            text-shadow: 
+                0 2px 8px rgba(52, 199, 82, 0.25),
+                0 1px 4px rgba(52, 199, 82, 0.15),
+                0 4px 12px rgba(0, 0, 0, 0.06);
+        }
+
+        .subtitle {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #34495e;
+            margin-bottom: 50px;
+            line-height: 1.3;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease-out 1.2s forwards;
+            text-shadow: 
+                0 2px 6px rgba(0, 0, 0, 0.08),
+                0 1px 3px rgba(0, 0, 0, 0.06),
+                0 3px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .waitlist-section h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease-out 1.4s forwards;
+            text-shadow: 
+                0 2px 6px rgba(0, 0, 0, 0.08),
+                0 1px 3px rgba(0, 0, 0, 0.06),
+                0 3px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .waitlist-description {
+            font-size: 1.1rem;
+            color: #7f8c8d;
+            margin-bottom: 40px;
+            font-weight: 700;
+            line-height: 1.5;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease-out 1.6s forwards;
+            text-shadow: 
+                0 1px 4px rgba(0, 0, 0, 0.06),
+                0 1px 2px rgba(0, 0, 0, 0.04);
+        }
+
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            max-width: 400px;
+            margin: 0 auto;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease-out 1.8s forwards;
+        }
+
+        .email-input {
+            padding: 18px 24px;
+            border: 2px solid #fafbfc;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-family: 'Roboto', sans-serif;
+            font-weight: 700;
+            outline: none;
+            transition: all 0.3s ease;
+            background: #fefeff;
+            box-shadow: 
+                0 4px 12px rgba(0, 0, 0, 0.06),
+                inset -2px -2px 4px #FAFBFF,
+                inset 2px 2px 4px rgba(52, 199, 89, 0.15);
+        }
+
+        .email-input:focus {
+            border-color: rgb(52, 199, 82);
+            background: white;
+            box-shadow: 
+                0 0 0 3px rgba(52, 199, 82, 0.1),
+                0 6px 16px rgba(0, 0, 0, 0.08),
+                inset -2px -2px 4px #FAFBFF,
+                inset 2px 2px 4px rgba(52, 199, 89, 0.15);
+        }
+
+        .email-input::placeholder {
+            color: #95a5a6;
+            font-weight: 700;
+        }
+
+        .join-button {
+            padding: 12px 32px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #2c3e50;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 700;
+            font-family: 'Roboto', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.1),
+                0 4px 16px rgba(0, 0, 0, 0.06),
+                inset 0 1px 0 rgba(255, 255, 255, 0.5),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.05);
+            transform: translateZ(0);
+            width: 33.33%;
+            align-self: center;
+        }
+
+        .join-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05));
+            opacity: 1;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .join-button:hover {
+            color: rgb(52, 199, 82);
+            transform: translateY(-1px) translateZ(0);
+            box-shadow: 
+                0 12px 40px rgba(0, 0, 0, 0.15),
+                0 6px 20px rgba(0, 0, 0, 0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 0.6),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+        }
+
+        .join-button:hover::before {
+            opacity: 0.7;
+        }
+
+        .join-button:active {
+            transform: translateY(0) scale(0.98);
+            box-shadow: 
+                0 4px 16px rgba(0, 0, 0, 0.12),
+                0 2px 8px rgba(0, 0, 0, 0.06),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+            transition: all 0.1s ease;
+        }
+
+        .join-button:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .success-message {
+            display: none;
+            color: rgb(52, 199, 82);
+            font-weight: 700;
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(52, 199, 82, 0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(52, 199, 82, 0.2);
+            box-shadow: 
+                0 4px 12px rgba(52, 199, 82, 0.15),
+                0 2px 6px rgba(0, 0, 0, 0.05);
+            opacity: 0;
+            transform: translateY(-10px) scale(0.95);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .success-message.show {
+            display: block;
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .error-message {
+            display: none;
+            color: #dc3545;
+            font-weight: 700;
+            margin-top: 15px;
+            padding: 16px 20px;
+            background: #f8f9fa;
+            border-radius: 20px;
+            border: none;
+            box-shadow: 
+                0 4px 12px rgba(0, 0, 0, 0.08),
+                0 2px 6px rgba(0, 0, 0, 0.04),
+                inset 0 1px 3px rgba(0, 0, 0, 0.05),
+                inset 0 -1px 0 rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            opacity: 0;
+            transform: translateY(-10px) scale(0.95);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .error-message.show {
+            display: block;
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .validation-error {
+            display: none;
+            color: #dc3545;
+            font-weight: 700;
+            margin-top: 8px;
+            padding: 12px 16px;
+            background: #f8f9fa;
+            border-radius: 16px;
+            border: none;
+            box-shadow: 
+                0 3px 8px rgba(0, 0, 0, 0.06),
+                0 2px 4px rgba(0, 0, 0, 0.04),
+                inset 0 1px 2px rgba(0, 0, 0, 0.04),
+                inset 0 -1px 0 rgba(255, 255, 255, 0.9);
+            font-size: 0.85rem;
+            opacity: 0;
+            transform: translateY(-8px) scale(0.96);
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .validation-error.show {
+            display: block;
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 40px 30px;
+                margin: 10px;
+            }
+
+            h1 {
+                font-size: 2.2rem;
+            }
+
+            .subtitle {
+                font-size: 1.8rem;
+            }
+
+            .waitlist-section h2 {
+                font-size: 1.6rem;
+            }
+
+            .form-container {
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 30px 20px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .subtitle {
+                font-size: 1.5rem;
+            }
+
+            .logo-placeholder {
+                width: 60px;
+                height: 60px;
+                font-size: 12px;
+            }
+        }
+
+        /* Loading animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Intro animations */
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes logoScale {
+            to {
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* Prevent flash of unstyled content */
+        .container * {
+            will-change: transform, opacity;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo-container">
+            <img src="images/TeeMeLogoWeb.png" alt="TeeMe Logo" class="logo-image">
+        </div>
+
+        <h1>Welcome to <span class="brand-name">TeeMe</span></h1>
+        <p class="subtitle">The future of golf apps</p>
+
+        <div class="waitlist-section">
+            <h2>Join our waitlist</h2>
+            <p class="waitlist-description">Be the first to experience TeeMe. Join the waitlist today for updates.</p>
+
+            <form class="form-container" id="waitlistForm" novalidate>
+                <input 
+                    type="email" 
+                    class="email-input" 
+                    placeholder="Enter your email"
+                    required
+                    id="emailInput"
+                >
+                <div class="validation-error" id="validationError"></div>
+                <button type="submit" class="join-button" id="joinButton">
+                    <span class="button-text">Join</span>
+                </button>
+            </form>
+
+            <div class="success-message" id="successMessage">
+                🎉 Thank you for signing up. Welcome to the future of golf!
+            </div>
+
+            <div class="error-message" id="errorMessage">
+                Something went wrong. Please try again.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Google Sheets integration configuration
+        const GOOGLE_SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbw08BAsWSUCIEKjvbA19qvHW95jhJlfyE7gz-mDMumK2r6Golh0PIycR0ACcNufOWXI/exec';
+        
+        // Form handling
+        document.getElementById('waitlistForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const emailInput = document.getElementById('emailInput');
+            const joinButton = document.getElementById('joinButton');
+            const buttonText = joinButton.querySelector('.button-text');
+            const successMessage = document.getElementById('successMessage');
+            const errorMessage = document.getElementById('errorMessage');
+            const validationError = document.getElementById('validationError');
+            
+            // Reset messages
+            hideMessage(successMessage);
+            hideMessage(errorMessage);
+            hideMessage(validationError);
+            
+            // Validate email
+            const email = emailInput.value.trim();
+            if (!email) {
+                showValidationError('Please enter your email address');
+                return;
+            }
+            if (!isValidEmail(email)) {
+                showValidationError('Please enter a valid email address');
+                return;
+            }
+            
+            // Show loading state
+            joinButton.disabled = true;
+            buttonText.innerHTML = '<div class="loading"></div>';
+            
+            try {
+                // Submit to Google Sheets
+                const formData = new FormData();
+                formData.append('email', email);
+                formData.append('source', 'TeeMe Waitlist');
+                
+                console.log('Submitting to Google Sheets...'); // Debug log
+                
+                const response = await fetch(GOOGLE_SHEET_ENDPOINT, {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                console.log('Response status:', response.status); // Debug log
+                
+                const result = await response.json();
+                console.log('Response result:', result); // Debug log
+                
+                if (result.success) {
+                    // Success
+                    console.log('Success! Showing message...'); // Debug log
+                    showMessage(successMessage);
+                    emailInput.value = '';
+                    
+                    // Add subtle success animation
+                    joinButton.style.background = 'rgba(39, 174, 96, 0.9)';
+                    joinButton.style.color = 'white';
+                    setTimeout(() => {
+                        joinButton.style.background = 'rgba(255, 255, 255, 0.9)';
+                        joinButton.style.color = '#2c3e50';
+                    }, 2000);
+                } else {
+                    console.error('Submission failed:', result); // Debug log
+                    throw new Error('Submission failed');
+                }
+                
+            } catch (error) {
+                console.error('Error submitting form:', error);
+                showError('Unable to join waitlist. Please try again later.');
+            } finally {
+                // Reset button state
+                joinButton.disabled = false;
+                buttonText.textContent = 'Join';
+            }
+        });
+        
+        function showValidationError(message) {
+            const validationError = document.getElementById('validationError');
+            validationError.textContent = message;
+            validationError.classList.add('show');
+        }
+        
+        function showError(message) {
+            const errorMessage = document.getElementById('errorMessage');
+            errorMessage.textContent = message;
+            errorMessage.classList.add('show');
+        }
+        
+        function showMessage(element) {
+            element.classList.add('show');
+        }
+        
+        function hideMessage(element) {
+            element.classList.remove('show');
+        }
+        
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+        
+        // Enhanced UX: Real-time email validation
+        document.getElementById('emailInput').addEventListener('input', function(e) {
+            const email = e.target.value.trim();
+            const joinButton = document.getElementById('joinButton');
+            const validationError = document.getElementById('validationError');
+            
+            // Hide validation error when typing
+            hideMessage(validationError);
+            
+            if (email && isValidEmail(email)) {
+                joinButton.style.opacity = '1';
+                joinButton.style.transform = 'scale(1)';
+            } else {
+                joinButton.style.opacity = '0.8';
+            }
+        });
+        
+        // Clear validation error when focusing on input
+        document.getElementById('emailInput').addEventListener('focus', function() {
+            const validationError = document.getElementById('validationError');
+            hideMessage(validationError);
+            this.parentElement.style.transform = 'translateY(-2px)';
+        });
+        
+        document.getElementById('emailInput').addEventListener('blur', function() {
+            this.parentElement.style.transform = 'translateY(0)';
+        });
+    </script>
+</body>
+</html>
