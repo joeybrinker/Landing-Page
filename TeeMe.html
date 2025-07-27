@@ -422,14 +422,17 @@
             <h2>Join our waitlist</h2>
             <p class="waitlist-description">Be the first to experience TeeMe. Join the waitlist today for updates.</p>
 
-            <form class="form-container" id="waitlistForm" novalidate>
+            <form class="form-container" action="https://app.loops.so/api/newsletter-form/cmddmmdla081rx10ipb659zhw" method="POST" id="waitlistForm" novalidate>
                 <input 
                     type="email" 
+                    name="email"
                     class="email-input" 
                     placeholder="Enter your email"
                     required
                     id="emailInput"
                 >
+                <input type="hidden" name="userGroup" value="TeeMe Waitlist">
+                <input type="hidden" name="mailingLists" value="cmdky9zxk1tn90iy4c6xn6tbu">
                 <div class="validation-error" id="validationError"></div>
                 <button type="submit" class="join-button" id="joinButton">
                     <span class="button-text">Join</span>
@@ -447,13 +450,8 @@
     </div>
 
     <script>
-        // Google Sheets integration configuration
-        const GOOGLE_SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbw08BAsWSUCIEKjvbA19qvHW95jhJlfyE7gz-mDMumK2r6Golh0PIycR0ACcNufOWXI/exec';
-        
-        // Form handling
+        // Loops native form integration
         document.getElementById('waitlistForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
             const emailInput = document.getElementById('emailInput');
             const joinButton = document.getElementById('joinButton');
             const buttonText = joinButton.querySelector('.button-text');
@@ -469,10 +467,12 @@
             // Validate email
             const email = emailInput.value.trim();
             if (!email) {
+                e.preventDefault();
                 showValidationError('Please enter your email address');
                 return;
             }
             if (!isValidEmail(email)) {
+                e.preventDefault();
                 showValidationError('Please enter a valid email address');
                 return;
             }
@@ -481,27 +481,22 @@
             joinButton.disabled = true;
             buttonText.innerHTML = '<div class="loading"></div>';
             
-            try {
-                // Submit to Google Sheets
-                const formData = new FormData();
-                formData.append('email', email);
-                formData.append('source', 'TeeMe Waitlist');
-                
-                console.log('Submitting to Google Sheets...'); // Debug log
-                
-                const response = await fetch(GOOGLE_SHEET_ENDPOINT, {
-                    method: 'POST',
-                    body: formData
-                });
-                
-                console.log('Response status:', response.status); // Debug log
-                
-                const result = await response.json();
-                console.log('Response result:', result); // Debug log
-                
-                if (result.success) {
-                    // Success
-                    console.log('Success! Showing message...'); // Debug log
+            // Let the form submit naturally, but intercept the redirect
+            const form = this;
+            const formAction = form.action;
+            const formData = new FormData(form);
+            
+            // Submit the form in a hidden iframe to avoid redirect
+            const iframe = document.createElement('iframe');
+            iframe.style.display = 'none';
+            iframe.name = 'hidden-form-iframe';
+            document.body.appendChild(iframe);
+            
+            form.target = 'hidden-form-iframe';
+            
+            // Handle success after form submission
+            iframe.onload = function() {
+                setTimeout(() => {
                     showMessage(successMessage);
                     emailInput.value = '';
                     
@@ -511,20 +506,16 @@
                     setTimeout(() => {
                         joinButton.style.background = 'rgba(255, 255, 255, 0.9)';
                         joinButton.style.color = '#2c3e50';
+                        joinButton.disabled = false;
+                        buttonText.textContent = 'Join';
+                        // Clean up
+                        document.body.removeChild(iframe);
+                        form.target = '';
                     }, 2000);
-                } else {
-                    console.error('Submission failed:', result); // Debug log
-                    throw new Error('Submission failed');
-                }
-                
-            } catch (error) {
-                console.error('Error submitting form:', error);
-                showError('Unable to join waitlist. Please try again later.');
-            } finally {
-                // Reset button state
-                joinButton.disabled = false;
-                buttonText.textContent = 'Join';
-            }
+                }, 500);
+            };
+            
+            // Let the form submit naturally (it will load in the hidden iframe)
         });
         
         function showValidationError(message) {
